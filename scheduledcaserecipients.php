@@ -196,7 +196,7 @@ function scheduledcaserecipients_civicrm_postProcess($formName, &$form) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterMailParams
  */
 function scheduledcaserecipients_civicrm_alterMailParams(&$params, $context) {
-  if ($params['groupName'] == "Scheduled Reminder Sender" && $params['entity'] == "action_schedule") {
+  if ($params['groupName'] == "Scheduled Reminder Sender" && $params['entity'] == "action_schedule" && isset($params["token_params"])) {
     $reminder_id = $params['entity_id'];
     $scheduledcaseroleids = civicrm_api3("ScheduledCaseRecipient", "get", array(
         "reminder_id" => $reminder_id,
@@ -204,9 +204,11 @@ function scheduledcaserecipients_civicrm_alterMailParams(&$params, $context) {
         "return"      => array("case_role_id"),
     ));
 
-    if (count($scheduledcaseroleids["values"])) {
+    if (count($scheduledcaseroleids["values"]) && isset($params["token_params"]["activity.case_id"])) {
       $scheduledcaseroleids = array_column($scheduledcaseroleids["values"], "case_role_id");
-      CRM_Scheduledcaserecipients_BAO_ScheduledCaseRecipient::findEmailsByCaseRoles($scheduledcaseroleids, $params['toEmail']);
+      $contactEmails = CRM_Scheduledcaserecipients_BAO_ScheduledCaseRecipient::findEmailsByCaseRoles($scheduledcaseroleids, $params["token_params"]["activity.case_id"]);
+      $contactEmails = implode(",", $contactEmails);
+      $params["toEmail"] = $contactEmails;
     }
   }
 }
