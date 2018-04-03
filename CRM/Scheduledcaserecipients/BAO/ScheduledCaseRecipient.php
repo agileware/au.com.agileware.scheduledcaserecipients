@@ -12,13 +12,17 @@ class CRM_Scheduledcaserecipients_BAO_ScheduledCaseRecipient extends CRM_Schedul
     $contactIds = array_column($contactIds["values"], "contact_id_b");
     $contactIds = array_unique($contactIds);
 
-    $contactEmails = civicrm_api3("Email", "get", array(
-      "contact_id" => array("IN" => $contactIds),
-      "is_primary" => TRUE,
-    ));
+    if (count($contactIds)) {
+      $contactEmails = civicrm_api3("Email", "get", array(
+        "contact_id" => array("IN" => $contactIds),
+        "is_primary" => TRUE,
+      ));
 
-    $contactEmails = array_column($contactEmails["values"], "email");
-    return $contactEmails;
+      $contactEmails = array_column($contactEmails["values"], "email");
+      return $contactEmails;
+    }
+
+    return array();
   }
 
 }

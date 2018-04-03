@@ -55,7 +55,8 @@
         }
 
         $('body').on('change','#entity_1',function(e) {
-            if($(this).val() == 16) {
+            var value = $(this).val();
+            if((value.constructor === Array && value[0] == 16) || value == 16) {
                 isCaseStatusType = true;
             } else {
                 isCaseStatusType = false;
