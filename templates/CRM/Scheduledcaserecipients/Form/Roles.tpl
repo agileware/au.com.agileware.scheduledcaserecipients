@@ -10,7 +10,6 @@
     CRM.$(function($) {
 
         var isEntityActivity = false;
-        var isCaseStatusType = false;
 
         var displayCaseRoles = {/literal}{if $display_case_roles}{$display_case_roles}{else}0{/if}{literal};
         $('#caseRolesGroup').insertAfter('#recipientList');
@@ -54,16 +53,6 @@
             $('#caseRolesGroup').show();
         }
 
-        $('body').on('change','#entity_1',function(e) {
-            var value = $(this).val();
-            if((value.constructor === Array && value[0] == 16) || value == 16) {
-                isCaseStatusType = true;
-            } else {
-                isCaseStatusType = false;
-            }
-            showOrHideCaseRoles();
-        });
-
         $('#recipient').change(function() {
             if ($(this).val() == 'caseroles') {
                 $('#caseRolesGroup').show();
@@ -74,7 +63,7 @@
         });
 
         function showOrHideCaseRoles() {
-            if((isEntityActivity && isCaseStatusType) || displayCaseRoles) {
+            if(isEntityActivity || displayCaseRoles) {
                 addCaseRolesOption();
             } else {
                 $("#recipient").find("option[value='caseroles']").remove();
