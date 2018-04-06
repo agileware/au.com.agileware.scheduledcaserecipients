@@ -36,12 +36,9 @@
         }
 
         $(document).ajaxComplete(function( event, xhr, settings ) {
-            if (settings.url.indexOf("civicrm/ajax/mapping&mappingID=1") >= 0) {
-                isEntityActivity = true;
-            } else {
-                isEntityActivity = false;
-            }
-            if(settings.url.indexOf("civicrm/ajax/mapping") >= 0) {
+            var m = settings.url.match(/civicrm\/ajax\/mapping(?=\/?[&?]).*[&?]mappingID=([0-9]+)/i)
+            if(m) {
+                isEntityActivity = (m[1] == '1');
                 showOrHideCaseRoles();
             }
         });
