@@ -210,5 +210,48 @@ function scheduledcaserecipients_civicrm_alterMailParams(&$params, $context) {
       $contactEmails = implode(",", $contactEmails);
       $params["toEmail"] = $contactEmails;
     }
+
+    if (isset($params["token_params"]["activity.case_id"])) {
+      $caseId = $params["token_params"]["activity.case_id"];
+      $caseInfo = civicrm_api3("Case", "get", array(
+          "id"         => $caseId,
+          "sequential" => 1,
+      ));
+      if ($caseInfo["count"]) {
+        $caseInfo = $caseInfo["values"][0];
+      }
+
+      $params['html'] = str_replace("[activityCaseId]", $caseId, $params['html']);
+      $params['subject'] = str_replace("[activityCaseId]", $caseId, $params['subject']);
+      $params['text'] = str_replace("[activityCaseId]", $caseId, $params['text']);
+
+      $params['html'] = str_replace("[activityCaseSubject]", $caseInfo["subject"], $params['html']);
+      $params['subject'] = str_replace("[activityCaseSubject]", $caseInfo["subject"], $params['subject']);
+      $params['text'] = str_replace("[activityCaseSubject]", $caseInfo["subject"], $params['text']);
+    }
   }
+}
+
+/**
+ * Implements hook_civicrm_tokenValues().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_tokenValues
+ */
+function scheduledcaserecipients_civicrm_tokenValues(&$values, $cids, $job = NULL, $tokens = array(), $context = NULL) {
+  if (!is_array($cids)) {
+    $values['case.id'] = "[activityCaseId]";
+    $values['case.subject'] = "[activityCaseSubject]";
+  }
+}
+
+/**
+ * Implements hook_civicrm_tokens().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_tokens
+ */
+function scheduledcaserecipients_civicrm_tokens(&$tokens) {
+  $tokens['case'] = array(
+    'case.subject' => ts("Case Subject"),
+    'case.id'      => ts("Case ID"),
+  );
 }
