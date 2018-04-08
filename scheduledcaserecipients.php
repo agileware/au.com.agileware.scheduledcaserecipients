@@ -242,6 +242,12 @@ function scheduledcaserecipients_civicrm_tokenValues(&$values, $cids, $job = NUL
     $values['case.id'] = "[activityCaseId]";
     $values['case.subject'] = "[activityCaseSubject]";
   }
+  else {
+    foreach ($cids as $cid) {
+      $values[$cid]['case.id'] = "[activityCaseId]";
+      $values[$cid]['case.subject'] = "[activityCaseSubject]";
+    }
+  }
 }
 
 /**
