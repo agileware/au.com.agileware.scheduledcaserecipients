@@ -190,6 +190,10 @@ function scheduledcaserecipients_civicrm_postProcess($formName, &$form) {
     $caseRoleIds = CRM_Utils_Array::value('case_roles', $form->_submitValues);
     $caseTypeIds = CRM_Utils_Array::value('case_types', $form->_submitValues);
 
+    $actionScheduleCount = civicrm_api3('ActionSchedule', 'getcount', array(
+      'id' => $formid,
+    ));
+
     if ($caseRoleIds != "") {
       $caseRoleIds = explode(",", $caseRoleIds);
       $scheduledcaseids = civicrm_api3("ScheduledCaseRecipient", "get", array(
@@ -208,7 +212,9 @@ function scheduledcaserecipients_civicrm_postProcess($formName, &$form) {
             'reminder_id' => $formid,
             'case_role_id' => $caseRoleId,
           );
-          civicrm_api3("ScheduledCaseRecipient", "create", $params);
+          if ($actionScheduleCount) {
+            civicrm_api3("ScheduledCaseRecipient", "create", $params);
+          }
         }
       }
     }
@@ -231,7 +237,9 @@ function scheduledcaserecipients_civicrm_postProcess($formName, &$form) {
           'reminder_id' => $formid,
           'case_type_id' => $caseTypeId,
         );
-        civicrm_api3("ScheduledCaseTypes", "create", $params);
+        if ($actionScheduleCount) {
+          civicrm_api3("ScheduledCaseTypes", "create", $params);
+        }
       }
     }
   }
