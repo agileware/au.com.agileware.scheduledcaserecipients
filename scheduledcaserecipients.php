@@ -323,7 +323,7 @@ function scheduledcaserecipients_civicrm_tokens(&$tokens) {
 /**
  * Implements hook_civicrm_entityTypes().
  */
-function accountsync_civicrm_entityTypes(&$entityTypes) {
+function scheduledcaserecipients_civicrm_entityTypes(&$entityTypes) {
   if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'])) {
     $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'] = array(
       'name' => 'ScheduledCaseRecipient',
