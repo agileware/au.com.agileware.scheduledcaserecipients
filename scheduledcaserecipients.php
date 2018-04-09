@@ -319,3 +319,23 @@ function scheduledcaserecipients_civicrm_tokens(&$tokens) {
     'case.id'      => ts("Case ID"),
   );
 }
+
+/**
+ * Implements hook_civicrm_entityTypes().
+ */
+function accountsync_civicrm_entityTypes(&$entityTypes) {
+  if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'])) {
+    $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'] = array(
+      'name' => 'ScheduledCaseRecipient',
+      'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient',
+      'table' => 'civicrm_scheduledcaserecipient',
+    );
+  }
+  if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes'])) {
+    $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes'] = array(
+      'name' => 'ScheduledCaseTypes',
+      'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes',
+      'table' => 'civicrm_scheduledcasetypes',
+    );
+  }
+}
