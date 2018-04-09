@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Scheduledcaserecipients</base>
+  <class>ScheduledCaseTypes</class>
+  <name>civicrm_scheduledcasetypes</name>
+  <comment>FIXME</comment>
+  <add>4.4</add>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique ScheduledCaseTypes ID</comment>
+    <add>4.6</add>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>reminder_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Scheduled Reminder</comment>
+    <add>4.6</add>
+  </field>
+  <foreignKey>
+    <name>reminder_id</name>
+    <table>civicrm_action_schedule</table>
+    <key>id</key>
+    <add>4.6</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>case_type_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Case Type</comment>
+    <add>4.6</add>
+  </field>
+  <foreignKey>
+    <name>case_type_id</name>
+    <table>civicrm_case_type</table>
+    <key>id</key>
+    <add>4.6</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+</table>
