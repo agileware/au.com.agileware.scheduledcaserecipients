@@ -408,4 +408,11 @@ function scheduledcaserecipients_civicrm_entityTypes(&$entityTypes) {
       'table' => 'civicrm_scheduledcasetypes',
     );
   }
+  if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses'])) {
+    $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses'] = array(
+      'name' => 'ScheduledCaseStatuses',
+      'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses',
+      'table' => 'civicrm_scheduledcasestatuses',
+    );
+  }
 }
