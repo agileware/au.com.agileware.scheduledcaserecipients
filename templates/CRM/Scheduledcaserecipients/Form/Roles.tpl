@@ -18,17 +18,14 @@
     CRM.$(function($) {
 
         var isEntityActivity = false;
-        var isChangeCaseStatusType = false;
 
         var displayCaseRoles = {/literal}{if $display_case_roles}{$display_case_roles}{else}0{/if}{literal};
         var displayCaseTypes = {/literal}{if $display_case_types}{$display_case_types}{else}0{/if}{literal};
         var displayCaseStatuses = {/literal}{if $display_case_statuses}{$display_case_statuses}{else}0{/if}{literal};
 
         $('#caseRolesGroup').insertAfter('#recipientList');
-        $('#caseTypesGroup').insertAfter('#recipientList');
+        $('#caseTypesGroup').insertBefore('.crm-scheduleReminder-form-block-when');
         $('#caseStatusesGroup').insertBefore('.crm-scheduleReminder-form-block-when');
-
-        setCaseActivityStatus();
 
         function addCaseTypesOption() {
             var selectedCaseTypes = [];
@@ -93,11 +90,6 @@
             }
         });
 
-        $('body').on('change', '#entity_1', function () {
-           setCaseActivityStatus();
-           showOrHideCaseStatuses();
-        });
-
         if ($("#recipient").val() != 'case_roles') {
             $('#caseRolesGroup').hide();
         }
@@ -133,22 +125,13 @@
         }
 
         function showOrHideCaseStatuses() {
-            if((isChangeCaseStatusType && isEntityActivity)) {
+            if(isEntityActivity) {
                 $('#caseStatusesGroup').show();
                 if(displayCaseStatuses) {
                     addCaseStatusesOption();
                 }
             } else {
                 $('#caseStatusesGroup').hide();
-            }
-        }
-
-        function setCaseActivityStatus() {
-            var selectedValue = $("#entity_1 option:selected").text();
-            if(selectedValue == "Change Case Status") {
-                isChangeCaseStatusType = true;
-            } else {
-                isChangeCaseStatusType = false;
             }
         }
 
