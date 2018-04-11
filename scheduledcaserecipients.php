@@ -133,6 +133,7 @@ function scheduledcaserecipients_civicrm_buildForm($formName, &$form) {
     $caseRoles = array();
     $displayCaseRoles = FALSE;
     $displayCaseTypes = FALSE;
+    $displayCaseStatuses = FALSE;
 
     if ($form->getVar('_id')) {
       $values = $form->getVar('_values');
@@ -156,10 +157,21 @@ function scheduledcaserecipients_civicrm_buildForm($formName, &$form) {
           $caseTypes = array_column($caseTypes["values"], "case_type_id");
           $form->assign('selected_case_types', $caseTypes);
         }
+
+        $caseStatuses = civicrm_api3("ScheduledCaseStatuses", "get", array(
+          "reminder_id" => $values["id"],
+        ));
+
+        if ($caseStatuses["count"]) {
+          $displayCaseStatuses = TRUE;
+          $caseStatuses = array_column($caseStatuses["values"], "case_status_id");
+          $form->assign('selected_case_statuses', $caseStatuses);
+        }
       }
     }
     $form->assign('display_case_roles', $displayCaseRoles);
     $form->assign('display_case_types', $displayCaseTypes);
+    $form->assign('display_case_statuses', $displayCaseStatuses);
 
     $form->addEntityRef('case_roles', ts('Roles'), array(
         'entity' => 'RelationshipType',
@@ -170,6 +182,15 @@ function scheduledcaserecipients_civicrm_buildForm($formName, &$form) {
     $form->addEntityRef('case_types', ts('Case Types'), array(
       'entity' => 'CaseType',
       'placeholder' => ts('- Select Types-'),
+      'select' => array('minimumInputLength' => 0, 'multiple' => TRUE),
+    ));
+
+    $form->addEntityRef('case_statuses', ts('Case Status'), array(
+      'entity' => 'OptionValue',
+      'placeholder' => ts('- Select Status-'),
+      'api' => array(
+        'params' => array('option_group_id' => 'case_status'),
+      ),
       'select' => array('minimumInputLength' => 0, 'multiple' => TRUE),
     ));
 
@@ -187,8 +208,10 @@ function scheduledcaserecipients_civicrm_buildForm($formName, &$form) {
 function scheduledcaserecipients_civicrm_postProcess($formName, &$form) {
   if ($formName == "CRM_Admin_Form_ScheduleReminders") {
     $formid = $form->get('id');
+
     $caseRoleIds = CRM_Utils_Array::value('case_roles', $form->_submitValues);
     $caseTypeIds = CRM_Utils_Array::value('case_types', $form->_submitValues);
+    $caseStatusIds = CRM_Utils_Array::value('case_statuses', $form->_submitValues);
 
     $actionScheduleCount = civicrm_api3('ActionSchedule', 'getcount', array(
       'id' => $formid,
@@ -242,6 +265,30 @@ function scheduledcaserecipients_civicrm_postProcess($formName, &$form) {
         }
       }
     }
+
+    $scheduledcasestatusids = civicrm_api3("ScheduledCaseStatuses", "get", array(
+      "reminder_id" => $formid,
+      "return"      => "id",
+    ));
+    $scheduledcasestatusids = array_column($scheduledcasestatusids["values"], "id");
+    foreach ($scheduledcasestatusids as $scheduledcasestatusid) {
+      civicrm_api3("ScheduledCaseStatuses", "delete", array(
+          "id" => $scheduledcasestatusid,
+      ));
+    }
+
+    if ($form->_submitValues['entity'][0] == 1 && $caseStatusIds != "") {
+      $caseStatusIds = explode(",", $caseStatusIds);
+      foreach ($caseStatusIds as $caseStatusId) {
+        $params = array(
+          'reminder_id' => $formid,
+          'case_status_id' => $caseStatusId,
+        );
+        if ($actionScheduleCount) {
+          civicrm_api3("ScheduledCaseStatuses", "create", $params);
+        }
+      }
+    }
   }
 }
 
@@ -286,12 +333,27 @@ function scheduledcaserecipients_civicrm_alterMailParams(&$params, $context) {
 
       $caseTypeId = $caseInfo["case_type_id"];
 
+      $allScheduledCaseTypesCount = civicrm_api3("ScheduledCaseTypes", "getcount", array(
+        "reminder_id"  => $reminder_id,
+      ));
+
       $scheduledCaseTypesCount = civicrm_api3("ScheduledCaseTypes", "getcount", array(
          "case_type_id" => $caseTypeId,
          "reminder_id"  => $reminder_id,
       ));
 
-      if (!$scheduledCaseTypesCount) {
+      $caseStatusId = $caseInfo["status_id"];
+
+      $allScheduledCaseStatusesCount = civicrm_api3("ScheduledCaseStatuses", "getcount", array(
+        "reminder_id"  => $reminder_id,
+      ));
+
+      $scheduledCaseStatusesCount = civicrm_api3("ScheduledCaseStatuses", "getcount", array(
+        "case_status_id" => $caseStatusId,
+        "reminder_id"  => $reminder_id,
+      ));
+
+      if (($allScheduledCaseTypesCount && !$scheduledCaseTypesCount) || ($allScheduledCaseStatusesCount && !$scheduledCaseStatusesCount)) {
         $params["abortMailSend"] = TRUE;
       }
     }
