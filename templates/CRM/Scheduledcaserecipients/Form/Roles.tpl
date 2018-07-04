@@ -17,11 +17,15 @@
 <script type="text/javascript">
     CRM.$(function($) {
 
-        var isEntityActivity = false;
+        // Use global object for assignements from smarty, to prevent closure based duplication
+        CRM.scheduledCaseRecipients = {
+            isEntityActivity: false,
+            displayCaseRoles: {/literal}{if $display_case_roles}{$display_case_roles}{else}0{/if}{literal},
+            displayCaseTypes: {/literal}{if $display_case_types}{$display_case_types}{else}0{/if}{literal},
+            displayCaseStatuses: {/literal}{if $display_case_statuses}{$display_case_statuses}{else}0{/if}{literal},
+        }
 
-        var displayCaseRoles = {/literal}{if $display_case_roles}{$display_case_roles}{else}0{/if}{literal};
-        var displayCaseTypes = {/literal}{if $display_case_types}{$display_case_types}{else}0{/if}{literal};
-        var displayCaseStatuses = {/literal}{if $display_case_statuses}{$display_case_statuses}{else}0{/if}{literal};
+        var C = CRM.scheduledCaseRecipients;
 
         $('#caseRolesGroup').insertAfter('#recipientList');
         $('#caseTypesGroup').insertBefore('.crm-scheduleReminder-form-block-when');
@@ -38,7 +42,7 @@
                 {/foreach}
             {literal}
 
-            if(displayCaseTypes) {
+            if(C.displayCaseTypes) {
                 $('#case_types').select2("val", selectedCaseTypes);
             }
         }
@@ -54,7 +58,7 @@
                 {/foreach}
             {literal}
 
-            if(displayCaseStatuses) {
+            if(C.displayCaseStatuses) {
                 $('#case_statuses').select2("val", selectedCaseStatuses);
             }
         }
@@ -73,22 +77,27 @@
                 {/foreach}
             {literal}
 
-            if(displayCaseRoles) {
+            if(C.displayCaseRoles) {
                 $("#recipient").val('caseroles');
                 $("#recipient").trigger('change');
                 $('#case_roles').select2("val", selectedCaseRoles);
             }
         }
 
-        $(document).ajaxComplete(function( event, xhr, settings ) {
-            var m = settings.url.match(/civicrm\/ajax\/mapping(?=\/?[&?]).*[&?]mappingID=([0-9]+)/i)
-            if(m) {
-                isEntityActivity = (m[1] == '1');
-                showOrHideCaseRoles();
-                showOrHideCaseTypes();
-                showOrHideCaseStatuses();
-            }
-        });
+        // Guard ajax completion callback so that that it's only added once.
+        if (!('scheduledCaseRecipients-ajax' in CRM)) {
+            $(document).ajaxComplete(function( event, xhr, settings ) {
+                var m = settings.url.match(/civicrm\/ajax\/mapping(?=\/?[&?]).*[&?]mappingID=([0-9]+)/i)
+                if(m) {
+                    C.isEntityActivity = (m[1] == '1');
+                    showOrHideCaseRoles();
+                    showOrHideCaseTypes();
+                    showOrHideCaseStatuses();
+                }
+            });
+
+            CRM['scheduledCaseRecipients-ajax'] = 1;
+        }
 
         if ($("#recipient").val() != 'caseroles') {
             $('#caseRolesGroup').hide();
@@ -107,7 +116,7 @@
         });
 
         function showOrHideCaseTypes() {
-            if(isEntityActivity || displayCaseRoles) {
+            if(C.isEntityActivity || C.displayCaseRoles) {
                 $('#caseTypesGroup').show();
                 addCaseTypesOption();
             } else {
@@ -116,7 +125,7 @@
         }
 
         function showOrHideCaseRoles() {
-            if(isEntityActivity || displayCaseRoles) {
+            if(C.isEntityActivity || C.displayCaseRoles) {
                 addCaseRolesOption();
             } else {
                 $("#recipient").find("option[value='caseroles']").remove();
@@ -125,9 +134,9 @@
         }
 
         function showOrHideCaseStatuses() {
-            if(isEntityActivity) {
+            if(C.isEntityActivity) {
                 $('#caseStatusesGroup').show();
-                if(displayCaseStatuses) {
+                if(C.displayCaseStatuses) {
                     addCaseStatusesOption();
                 }
             } else {
