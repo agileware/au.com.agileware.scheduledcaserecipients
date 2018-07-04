@@ -23,6 +23,15 @@
             displayCaseRoles: {/literal}{if $display_case_roles}{$display_case_roles}{else}0{/if}{literal},
             displayCaseTypes: {/literal}{if $display_case_types}{$display_case_types}{else}0{/if}{literal},
             displayCaseStatuses: {/literal}{if $display_case_statuses}{$display_case_statuses}{else}0{/if}{literal},
+            selectedCaseTypes: [{/literal} {foreach from=$selected_case_types item=selected_case_types}
+                {$selected_case_types},
+            {/foreach} {literal}],
+            selectedCaseStatuses: [{/literal} {foreach from=$selected_case_statuses item=selected_case_status}
+                {$selected_case_status},
+            {/foreach} {literal}],
+            selectedCaseRoles: [{/literal} {foreach from=$selected_case_roles item=selected_case_role}
+                {$selected_case_role},
+            {/foreach} {literal}],
         }
 
         var C = CRM.scheduledCaseRecipients;
@@ -32,34 +41,14 @@
         $('#caseStatusesGroup').insertBefore('.crm-scheduleReminder-form-block-when');
 
         function addCaseTypesOption() {
-            var selectedCaseTypes = [];
-
-            {/literal}
-                {foreach from=$selected_case_types item=selected_case_type}
-                    {literal}
-                        selectedCaseTypes.push({/literal}{$selected_case_type}{literal});
-                    {/literal}
-                {/foreach}
-            {literal}
-
             if(C.displayCaseTypes) {
-                $('#case_types').select2("val", selectedCaseTypes);
+                $('#case_types').select2("val", C.selectedCaseTypes);
             }
         }
 
         function addCaseStatusesOption() {
-            var selectedCaseStatuses = [];
-
-            {/literal}
-                {foreach from=$selected_case_statuses item=selected_case_status}
-                    {literal}
-                        selectedCaseStatuses.push({/literal}{$selected_case_status}{literal});
-                    {/literal}
-                {/foreach}
-            {literal}
-
             if(C.displayCaseStatuses) {
-                $('#case_statuses').select2("val", selectedCaseStatuses);
+                $('#case_statuses').select2("val", C.selectedCaseStatuses);
             }
         }
 
@@ -68,19 +57,10 @@
                 $("#recipient").append('<option value = "caseroles">Case Role(s)</option>');
             }
 
-            var selectedCaseRoles = [];
-            {/literal}
-                {foreach from=$selected_case_roles item=selected_case_role}
-                    {literal}
-                        selectedCaseRoles.push({/literal}{$selected_case_role}{literal});
-                    {/literal}
-                {/foreach}
-            {literal}
-
             if(C.displayCaseRoles) {
                 $("#recipient").val('caseroles');
                 $("#recipient").trigger('change');
-                $('#case_roles').select2("val", selectedCaseRoles);
+                $('#case_roles').select2("val", C.selectedCaseRoles);
             }
         }
 
