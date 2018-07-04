@@ -90,7 +90,7 @@
             }
         });
 
-        if ($("#recipient").val() != 'case_roles') {
+        if ($("#recipient").val() != 'caseroles') {
             $('#caseRolesGroup').hide();
         }
         else {
