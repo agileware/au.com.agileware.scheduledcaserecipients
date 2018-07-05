@@ -34,33 +34,36 @@
             {/foreach} {literal}],
         }
 
-        var C = CRM.scheduledCaseRecipients;
+        console.log(CRM.scheduledCaseRecipients);
 
         $('#caseRolesGroup').insertAfter('#recipientList');
         $('#caseTypesGroup').insertBefore('.crm-scheduleReminder-form-block-when');
         $('#caseStatusesGroup').insertBefore('.crm-scheduleReminder-form-block-when');
 
         function addCaseTypesOption() {
-            if(C.displayCaseTypes) {
-                $('#case_types').select2("val", C.selectedCaseTypes);
+            console.log('types:', CRM.scheduledCaseRecipients.selectedCaseTypes);
+            if(CRM.scheduledCaseRecipients.displayCaseTypes) {
+                $('#case_types').select2("val", CRM.scheduledCaseRecipients.selectedCaseTypes);
             }
         }
 
         function addCaseStatusesOption() {
-            if(C.displayCaseStatuses) {
-                $('#case_statuses').select2("val", C.selectedCaseStatuses);
+            console.log('statuses:', CRM.scheduledCaseRecipients.selectedCaseStatuses);
+            if(CRM.scheduledCaseRecipients.displayCaseStatuses) {
+                $('#case_statuses').select2("val", CRM.scheduledCaseRecipients.selectedCaseStatuses);
             }
         }
 
         function addCaseRolesOption() {
+            console.log('roles:', CRM.scheduledCaseRecipients.selectedCaseRoles);
             if ($("#recipient option[value='caseroles']").length <= 0) {
                 $("#recipient").append('<option value = "caseroles">Case Role(s)</option>');
             }
 
-            if(C.displayCaseRoles) {
+            if(CRM.scheduledCaseRecipients.displayCaseRoles) {
                 $("#recipient").val('caseroles');
                 $("#recipient").trigger('change');
-                $('#case_roles').select2("val", C.selectedCaseRoles);
+                $('#case_roles').select2("val", CRM.scheduledCaseRecipients.selectedCaseRoles);
             }
         }
 
@@ -69,7 +72,7 @@
             $(document).ajaxComplete(function( event, xhr, settings ) {
                 var m = settings.url.match(/civicrm\/ajax\/mapping(?=\/?[&?]).*[&?]mappingID=([0-9]+)/i)
                 if(m) {
-                    C.isEntityActivity = (m[1] == '1');
+                    CRM.scheduledCaseRecipients.isEntityActivity = (m[1] == '1');
                     showOrHideCaseRoles();
                     showOrHideCaseTypes();
                     showOrHideCaseStatuses();
@@ -96,7 +99,7 @@
         });
 
         function showOrHideCaseTypes() {
-            if(C.isEntityActivity || C.displayCaseRoles) {
+            if(CRM.scheduledCaseRecipients.isEntityActivity || CRM.scheduledCaseRecipients.displayCaseRoles) {
                 $('#caseTypesGroup').show();
                 addCaseTypesOption();
             } else {
@@ -105,7 +108,7 @@
         }
 
         function showOrHideCaseRoles() {
-            if(C.isEntityActivity || C.displayCaseRoles) {
+            if(CRM.scheduledCaseRecipients.isEntityActivity || CRM.scheduledCaseRecipients.displayCaseRoles) {
                 addCaseRolesOption();
             } else {
                 $("#recipient").find("option[value='caseroles']").remove();
@@ -114,9 +117,9 @@
         }
 
         function showOrHideCaseStatuses() {
-            if(C.isEntityActivity) {
+            if(CRM.scheduledCaseRecipients.isEntityActivity) {
                 $('#caseStatusesGroup').show();
-                if(C.displayCaseStatuses) {
+                if(CRM.scheduledCaseRecipients.displayCaseStatuses) {
                     addCaseStatusesOption();
                 }
             } else {
