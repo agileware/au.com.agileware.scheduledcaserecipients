@@ -299,6 +299,7 @@ function scheduledcaserecipients_civicrm_postProcess($formName, &$form) {
  */
 function scheduledcaserecipients_civicrm_alterMailParams(&$params, $context) {
   if ($params['groupName'] == "Scheduled Reminder Sender" && $params['entity'] == "action_schedule" && isset($params["token_params"])) {
+
     $reminder_id = $params['entity_id'];
     $scheduledcaseroleids = civicrm_api3("ScheduledCaseRecipient", "get", array(
         "reminder_id" => $reminder_id,
@@ -306,17 +307,17 @@ function scheduledcaserecipients_civicrm_alterMailParams(&$params, $context) {
         "return"      => array("case_role_id"),
     ));
 
-    if (count($scheduledcaseroleids["values"]) && isset($params["token_params"]) && isset($params["token_params"]["activity.case_id"])) {
+    if (count($scheduledcaseroleids["values"]) && isset($params["token_params"]) && isset($params["token_params"]["case_id"])) {
       $scheduledcaseroleids = array_column($scheduledcaseroleids["values"], "case_role_id");
-      $contactEmails = CRM_Scheduledcaserecipients_BAO_ScheduledCaseRecipient::findEmailsByCaseRoles($scheduledcaseroleids, $params["token_params"]["activity.case_id"]);
+      $contactEmails = CRM_Scheduledcaserecipients_BAO_ScheduledCaseRecipient::findEmailsByCaseRoles($scheduledcaseroleids, $params["token_params"]["case_id"]);
       if (count($contactEmails)) {
         $contactEmails = implode(",", $contactEmails);
         $params["toEmail"] = $contactEmails;
       }
     }
 
-    if (isset($params["token_params"]) && isset($params["token_params"]["activity.activity_id"])) {
-      $activityId = $params["token_params"]["activity.activity_id"];
+    if (isset($params["token_params"]) && isset($params["token_params"]["activity_id"])) {
+      $activityId = $params["token_params"]["activity_id"];
       $targetContacts = civicrm_api3('ActivityContact', 'get', array(
         'sequential' => 1,
         'return' => "contact_id",
@@ -341,8 +342,8 @@ function scheduledcaserecipients_civicrm_alterMailParams(&$params, $context) {
       $params['text'] = str_replace("[activityTarget]", $targetContactNames, $params['text']);
     }
 
-    if (isset($params["token_params"]) && isset($params["token_params"]["activity.case_id"])) {
-      $caseId = $params["token_params"]["activity.case_id"];
+    if (isset($params["token_params"]) && isset($params["token_params"]["case_id"])) {
+      $caseId = $params["token_params"]["case_id"];
 
       $caseInfo = civicrm_api3("Case", "get", array(
           "id"         => $caseId,

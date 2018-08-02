@@ -1,21 +1,12 @@
 diff --git a/CRM/Core/BAO/ActionSchedule.php b/CRM/Core/BAO/ActionSchedule.php
-index 55496cb..f8abf92 100755
+index e783523..fe792ea 100644
 --- a/CRM/Core/BAO/ActionSchedule.php
 +++ b/CRM/Core/BAO/ActionSchedule.php
-@@ -568,6 +568,7 @@ AND   cas.entity_value = $id AND
-           'subject' => $messageSubject,
-           'entity' => 'action_schedule',
-           'entity_id' => $scheduleID,
-+          'token_params' => $tokenParams,
-         );
+@@ -621,6 +621,7 @@ FROM civicrm_action_schedule cas
+       'subject' => $tokenRow->render('subject'),
+       'entity' => 'action_schedule',
+       'entity_id' => $schedule->id,
++      'token_params' => (array) $tokenRow->tokenProcessor->rowContexts[0]['actionSearchResult'],
+     );
 
-         if (!$html || $contact['preferred_mail_format'] == 'Text' ||
-@@ -720,7 +721,7 @@ AND   cas.entity_value = $id AND
-       if ($mapping->entity == 'civicrm_activity') {
-         $compInfo = CRM_Core_Component::getEnabledComponents();
-         $tokenEntity = 'activity';
--        $tokenFields = array('activity_id', 'activity_type', 'subject', 'details', 'activity_date_time');
-+        $tokenFields = array('activity_id', 'activity_type', 'subject', 'details', 'activity_date_time', 'case_id');
-         $extraSelect = ', ov.label as activity_type, e.id as activity_id';
-         $extraJoin = "
- INNER JOIN civicrm_option_group og ON og.name = 'activity_type'
+     if (!$body_html || $tokenRow->context['contact']['preferred_mail_format'] == 'Text' ||
