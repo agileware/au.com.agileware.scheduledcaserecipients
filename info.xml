@@ -2,11 +2,11 @@
 <extension key="au.com.agileware.scheduledcaserecipients" type="module">
   <file>scheduledcaserecipients</file>
   <name>Scheduled Reminder Case Recipients</name>
-  <description>Send Scheduled Reminders to contacts with a given Role for the Case that an Activity is filed on.</description>
+  <description>Send Scheduled Reminders to contacts with a given Role for the Case that an Activity is filed on, and provide tokens for case information.</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Agileware</author>
-    <email>info@agileware.com.au</email>
+    <email>support@agileware.com.au</email>
   </maintainer>
   <urls>
     <url desc="Main Extension Page">https://github.com/agileware/au.com.agileware.scheduledcaserecipients</url>
@@ -14,13 +14,16 @@
     <url desc="Support">https://github.com/agileware/au.com.agileware.scheduledcaserecipients/issues</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
-  <releaseDate>2018-03-26</releaseDate>
-  <version>1.0</version>
-  <develStage>alpha</develStage>
+  <releaseDate>2018-08-03</releaseDate>
+  <version>1.1</version>
+  <develStage>beta</develStage>
   <compatibility>
-    <ver>4.6</ver>
+    <ver>5</ver>
   </compatibility>
   <civix>
     <namespace>CRM/Scheduledcaserecipients</namespace>
   </civix>
+  <comments>
+    "Beta" status as currently requires a core patch for part of functionality.
+  </comments>
 </extension>
