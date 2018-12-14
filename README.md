@@ -1,4 +1,7 @@
-# Scheduled Reminder Case Recipients for CiviCRM #
+au.com.agileware.scheduledcaserecipients
+------
+
+CiviCRM extension to extend Scheduled Reminders to provide ability to send the reminder to particular roles of the Case an Activity is filed against; send a scheduled reminder for Activities filed against Cases with the selected Types & Statuses
 
 This extends the Scheduled Reminder configuration in CiviCRM, adding case
 related configuration: 
@@ -12,19 +15,20 @@ related configuration:
      * `{case.id}`
      * `{case.subject}`
 
-## Installation ##
+Installation
+------
 
 1. To allow use of case tokens, download and apply patch to CiviCRM:
    [civicrm-core-case-tokens.patch](civicrm-core-case-tokens.patch)
-2. Download [an archive](https://github.com/agileware/au.com.agileware.scheduledcasecrecipients/archive/1.1.tar.gz)
-   of the extension
+2. Download the [latest version of this extension archive](https://github.com/agileware/au.com.agileware.scheduledcaserecipients/archive/master.zip)
 3. Extract the contents of the extension archive into your CiviCRM Extensions
    Directory
 4. Select the “Install” button from the Extensions page of your CiviCRM
    interface ( /civicrm/admin/extensions?reset=1 )
 
 
-## Usage ##
+Usage
+------
 
 When creating a new scheduled reminder for Activities:
  * Select ‘Case Role(s)’ for Recipients to direct the schedule reminder to a
@@ -34,3 +38,22 @@ When creating a new scheduled reminder for Activities:
    against.
  * Insert the added tokens in your Email Subject and Body using the ‘Tokens’
    drop-down.
+
+About the Authors
+------
+
+This CiviCRM extension was developed by the team at [Agileware](https://agileware.com.au).
+
+[Agileware](https://agileware.com.au) provide a range of CiviCRM services including:
+
+  * CiviCRM migration
+  * CiviCRM integration
+  * CiviCRM extension development
+  * CiviCRM support
+  * CiviCRM hosting
+  * CiviCRM remote training services
+
+Support your Australian [CiviCRM](https://civicrm.org) developers, [contact Agileware](https://agileware.com.au/contact) today!
+
+
+![Agileware](logo/agileware-logo.png)  
