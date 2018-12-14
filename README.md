@@ -20,12 +20,9 @@ Installation
 
 1. To allow use of case tokens, download and apply patch to CiviCRM:
    [civicrm-core-case-tokens.patch](civicrm-core-case-tokens.patch)
-2. Download the [latest version of this extension archive](https://github.com/agileware/au.com.agileware.scheduledcaserecipients/archive/master.zip)
-3. Extract the contents of the extension archive into your CiviCRM Extensions
-   Directory
-4. Select the “Install” button from the Extensions page of your CiviCRM
-   interface ( /civicrm/admin/extensions?reset=1 )
-
+1. Download the [latest version of this extension](https://github.com/agileware/au.com.agileware.scheduledcaserecipients/archive/master.zip)
+1. Unzip in the CiviCRM extension directory, as defined in 'System Settings / Directories'.
+1. Go to "Administer / System Settings / Extensions" and enable the "Scheduled Reminder Case Recipients (au.com.agileware.scheduledcaserecipients)" extension.
 
 Usage
 ------
