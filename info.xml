@@ -2,7 +2,7 @@
 <extension key="au.com.agileware.scheduledcaserecipients" type="module">
   <file>scheduledcaserecipients</file>
   <name>Scheduled Reminder Case Recipients</name>
-  <description>CiviCRM extension to extend Scheduled Reminders to provide ability to send the reminder to particular roles of the Case an Activity is filed against; send a scheduled reminder for Activities filed against Cases with the selected Types & Statuses.</description>
+  <description>CiviCRM extension to extend Scheduled Reminders to provide ability to send the reminder to particular roles of the Case an Activity is filed against; send a scheduled reminder for Activities filed against Cases with the selected Types and Statuses.</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Agileware</author>
