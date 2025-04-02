@@ -13,15 +13,6 @@ function scheduledcaserecipients_civicrm_config(&$config) {
 }
 
 /**
- * Implements hook_civicrm_xmlMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
- */
-function scheduledcaserecipients_civicrm_xmlMenu(&$files) {
-  _scheduledcaserecipients_civix_civicrm_xmlMenu($files);
-}
-
-/**
  * Implements hook_civicrm_install().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
@@ -31,96 +22,12 @@ function scheduledcaserecipients_civicrm_install() {
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postInstall
- */
-function scheduledcaserecipients_civicrm_postInstall() {
-  _scheduledcaserecipients_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
- */
-function scheduledcaserecipients_civicrm_uninstall() {
-  _scheduledcaserecipients_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function scheduledcaserecipients_civicrm_enable() {
   _scheduledcaserecipients_civix_civicrm_enable();
-}
-
-/**
- * Implements hook_civicrm_disable().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
- */
-function scheduledcaserecipients_civicrm_disable() {
-  _scheduledcaserecipients_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_upgrade
- */
-function scheduledcaserecipients_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _scheduledcaserecipients_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_managed().
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
- */
-function scheduledcaserecipients_civicrm_managed(&$entities) {
-  _scheduledcaserecipients_civix_civicrm_managed($entities);
-}
-
-/**
- * Implements hook_civicrm_caseTypes().
- *
- * Generate a list of case-types.
- *
- * Note: This hook only runs in CiviCRM 4.4+.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
- */
-function scheduledcaserecipients_civicrm_caseTypes(&$caseTypes) {
-  _scheduledcaserecipients_civix_civicrm_caseTypes($caseTypes);
-}
-
-/**
- * Implements hook_civicrm_angularModules().
- *
- * Generate a list of Angular modules.
- *
- * Note: This hook only runs in CiviCRM 4.5+. It may
- * use features only available in v4.6+.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_angularModules
- */
-function scheduledcaserecipients_civicrm_angularModules(&$angularModules) {
-  _scheduledcaserecipients_civix_civicrm_angularModules($angularModules);
-}
-
-/**
- * Implements hook_civicrm_alterSettingsFolders().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
- */
-function scheduledcaserecipients_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _scheduledcaserecipients_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -428,26 +335,27 @@ function scheduledcaserecipients_civicrm_tokens(&$tokens) {
 /**
  * Implements hook_civicrm_entityTypes().
  */
-function scheduledcaserecipients_civicrm_entityTypes(&$entityTypes) {
-  if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'])) {
-    $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'] = array(
-      'name' => 'ScheduledCaseRecipient',
-      'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient',
-      'table' => 'civicrm_scheduledcaserecipient',
-    );
-  }
-  if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes'])) {
-    $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes'] = array(
-      'name' => 'ScheduledCaseTypes',
-      'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes',
-      'table' => 'civicrm_scheduledcasetypes',
-    );
-  }
-  if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses'])) {
-    $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses'] = array(
-      'name' => 'ScheduledCaseStatuses',
-      'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses',
-      'table' => 'civicrm_scheduledcasestatuses',
-    );
-  }
-}
+
+// function scheduledcaserecipients_civicrm_entityTypes(&$entityTypes) {
+//   if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'])) {
+//     $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient'] = array(
+//       'name' => 'ScheduledCaseRecipient',
+//       'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseRecipient',
+//       'table' => 'civicrm_scheduledcaserecipient',
+//     );
+//   }
+//   if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes'])) {
+//     $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes'] = array(
+//       'name' => 'ScheduledCaseTypes',
+//       'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseTypes',
+//       'table' => 'civicrm_scheduledcasetypes',
+//     );
+//   }
+//   if (!isset($entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses'])) {
+//     $entityTypes['CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses'] = array(
+//       'name' => 'ScheduledCaseStatuses',
+//       'class' => 'CRM_Scheduledcaserecipients_DAO_ScheduledCaseStatuses',
+//       'table' => 'civicrm_scheduledcasestatuses',
+//     );
+//   }
+// }
